@@ -581,7 +581,14 @@ void taskMainPidLoop(void)
                                             masterConfig.motorConfig.maxthrottle);
         }
     }
+    else {
+        // FIXME: throttle pitch comp for FW
+    }
 
+    // Update PID coefficients
+    updatePIDCoefficients(&currentProfile->pidProfile, currentControlRateProfile, &masterConfig.motorConfig);
+
+    // Calculate stabilisation
     pidController(&currentProfile->pidProfile, currentControlRateProfile, &masterConfig.rxConfig);
 
 #ifdef HIL
@@ -653,7 +660,6 @@ bool taskUpdateRxCheck(uint32_t currentDeltaTime)
 void taskUpdateRxMain(void)
 {
     processRx();
-    updatePIDCoefficients(&currentProfile->pidProfile, currentControlRateProfile, &masterConfig.rxConfig);
     isRXDataNew = true;
 }
 
